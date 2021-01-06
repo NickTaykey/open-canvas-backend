@@ -1,18 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Drawing = require('../models/Drawing');
+const { postDrawings, getDrawings } = require('../controllers/drawings');
+const { asyncErrorHandler } = require('../helpers');
 
 // Index - get all the drawings
-router.get('/', async function (req, res, nxt) {
-	let drawings = await Drawing.find();
-	return res.status(200).json(drawings);
-});
+router.get('/', asyncErrorHandler(getDrawings));
 
 // Create - save new drawing
-router.post('/', async function (req, res, nxt) {
-	const { pixels } = req.body;
-	let drawing = await Drawing.create({ pixels });
-	return res.status(201).json(drawing);
-});
+router.post('/', asyncErrorHandler(postDrawings));
 
 module.exports = router;

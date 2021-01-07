@@ -13,12 +13,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/open-canvas', {
-	useNewUrlParser    : true,
-	useUnifiedTopology : true,
-	useCreateIndex     : true,
-	useFindAndModify   : false
-});
+const { MONGO_USERNAME, MONGO_PASSWORD } = process.env;
+
+mongoose.connect(
+	`mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.vpqp4.mongodb.net/<dbname>?retryWrites=true&w=majority`,
+	{
+		useNewUrlParser    : true,
+		useUnifiedTopology : true,
+		useCreateIndex     : true,
+		useFindAndModify   : false
+	}
+);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
